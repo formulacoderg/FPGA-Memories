@@ -1,6 +1,4 @@
-# FPGA-Memories
-Writing to/from FPGA memory
-# FPGA ARC4 Decryption + 24-bit Key Search (DE1-SoC)
+
 # ARC4 Cipher Decryption and Cracking System
 
 A hardware implementation of the ARC4 stream cipher with brute-force decryption capabilities, designed in SystemVerilog for FPGA deployment on the DE1-SoC board.
