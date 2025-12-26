@@ -1,0 +1,29 @@
+C:/Users/gorat/OneDrive/Desktop/CPEN311-Lab3-Shared/task3/prga.vo {1 {vlog -work work -stats=none C:/Users/gorat/OneDrive/Desktop/CPEN311-Lab3-Shared/task3/prga.vo
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module prga
+
+Top level modules:
+	prga
+
+} {} {}} C:/Users/gorat/OneDrive/Desktop/CPEN311-Lab3-Shared/task3/prga.sv {1 {vlog -work work -sv -stats=none C:/Users/gorat/OneDrive/Desktop/CPEN311-Lab3-Shared/task3/prga.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module prga
+
+Top level modules:
+	prga
+
+} {} {}} C:/Users/gorat/OneDrive/Desktop/CPEN311-Lab3-Shared/task3/s_mem.v {1 {vlog -work work -stats=none C:/Users/gorat/OneDrive/Desktop/CPEN311-Lab3-Shared/task3/s_mem.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module s_mem
+
+Top level modules:
+	s_mem
+
+} {} {}} C:/Users/gorat/OneDrive/Desktop/CPEN311-Lab3-Shared/task3/tb_syn_prga.sv {1 {vlog -work work -sv -stats=none C:/Users/gorat/OneDrive/Desktop/CPEN311-Lab3-Shared/task3/tb_syn_prga.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module tb_syn_prga
+
+Top level modules:
+	tb_syn_prga
+
+} {} {}}

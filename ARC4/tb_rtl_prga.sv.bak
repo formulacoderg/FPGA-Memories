@@ -1,0 +1,171 @@
+module tb_rtl_prga();
+
+    // DUT input and output signals:
+    logic clk, rst_n, en, s_wren, pt_wren, rdy; //s_wren and pt_wren and rdy are 1bit outputs
+
+    // Debugging signals:
+    logic err, totalerr;
+    logic [2:0] s, t; // s = number of states passed tests, t = number of transitions passed tests
+
+    //outputs from prga
+    logic [7:0] s_addr, s_wrdata;
+    logic [7:0] ct_addr;
+    logic [7:0] pt_addr, pt_wrdata;
+
+    //inputs into prga
+    logic [7:0] ct_rddata, s_rddata, pt_rddata;
+
+    logic [23:0] key;
+
+    //Instantiate DUT
+    prga DUT(.clk(clk), .rst_n(rst_n),
+            .en(en), .rdy(rdy),
+            .key(key),
+            .s_addr(s_addr), .s_rddata(s_rddata), .s_wrdata(s_wrdata), .s_wren(s_wren),
+            .ct_addr(ct_addr), .ct_rddata(ct_rddata),
+            .pt_addr(pt_addr), .pt_rddata(pt_rddata), .pt_wrdata(pt_wrdata), .pt_wren(pt_wren));
+
+    localparam logic [4:0]
+
+    IDLE = 5'd0,
+    RDlen1 = 5'd1,
+    RDlen2 = 5'd2,
+    WRlen1 = 5'd3,
+    WRlen2 = 5'd4,
+    CALCI = 5'd5,
+    RDSI1 = 5'd6,
+    RDSI2 = 5'd7,
+    CALCJ = 5'd8,
+    RDSJ1 = 5'd9,
+    RDSJ2 = 5'd10,
+    WRSJ1 = 5'd11,
+    WRSJ2 = 5'd12,
+    WRSI1 = 5'd13,
+    WRSI2 = 5'd14,
+    RDSP1 = 5'd15,
+    RDSP2 = 5'd16,
+    RD01 = 5'd17,
+    RD02 = 5'd18,
+    XOR = 5'd19,
+    WRP1 = 5'd20,
+    WRP2 = 5'd21,
+    INCR = 5'd22;
+
+//tasks to check states and outputs
+
+    // Checking current state:
+    task checkstate;
+    input [4:0] expected_state;
+    begin
+        assert(expected_state == DUT.present_state)
+            else begin
+                err = 1'b1;
+                $display("Error: incorrect state - Expected: %b, Actual: %b", expected_state, DUT.present_state);
+            end
+    end
+    endtask
+
+
+    // Checking the 1 bit output signals - rdy and wren
+    task check_1bit_signals;
+    input expected_rdy, expected_s_wren, expected_pt_wren;
+    begin
+        assert(expected_rdy == rdy)
+            else begin
+                err = 1'b1;
+                $display("Error: incorrect rdy signal - Expected: %d, Actual: %d", expected_rdy, rdy);
+            end
+        
+        assert(expected_s_wren == s_wren)
+            else begin
+                err = 1'b1;
+                $display("Error: incorrect s_wren - Expected: %d, Actual: %d", expected_s_wren, s_wren);
+            end
+
+        assert(expected_pt_wren == pt_wren)
+            else begin
+                err = 1'b1;
+                $display("Error: incorrect pt_wren - Expected: %d, Actual: %d", expected_pt_wren, pt_wren);
+            end
+    end
+    endtask
+
+    //task to check the other ouputs - address and data
+
+     task checkoutputsignals;
+    input expected_s_addr, expected_s_wrdata, expected_pt_addr, expected_pt_wrdata, expected_ct_addr ;
+    begin
+        assert(expected_s_addr == s_addr)
+            else begin
+                err = 1'b1;
+                $display("Error: incorrect s_address - Expected: %d, Actual: %d", expected_s_addr, s_addr);
+            end
+        
+        assert(expected_s_wrdata == s_wrdata)
+            else begin
+                err = 1'b1;
+                $display("Error: incorrect s_wr_data - Expected: %d, Actual: %d", expected_s_wrdata, s_wrdata);
+            end
+
+        assert(expected_pt_addr == pt_addr)
+            else begin
+                err = 1'b1;
+                $display("Error: incorrect pt_address - Expected: %d, Actual: %d", expected_pt_addr, pt_addr);
+            end
+
+        assert(expected_pt_wrdata == pt_wrdata)
+            else begin
+                err = 1'b1;
+                $display("Error: incorrect pt_wrdata - Expected: %d, Actual: %d", expected_pt_wrdata, pt_wrdata);
+            end
+
+        assert(expected_ct_addr == ct_addr)
+            else begin
+                err = 1'b1;
+                $display("Error: incorrect ct_address - Expected: %d, Actual: %d", expected_ct_addr, ct_addr);
+            end
+    end
+    endtask
+
+    // Generate clock signal:
+    initial clk = 1'b0;
+    always  #10 clk = ~clk;   
+
+// Start tests:
+    initial begin
+        // Initialize debugging signals:
+        err = 1'b0;
+        totalerr = 1'b0;
+        s = 3'b0;
+        t = 3'b0;
+
+        // Initialize inputs:
+        rst_n = 1'b1; // active-low
+        en = 1'b0; #5;
+ 
+        // TEST 1: Check IDLE State
+        rst_n = 1'b0; #5; // assert reset
+        @(posedge clk);
+        checkstate(IDLE);
+
+        //check the outputs and signals
+        check_1bit_signals(1'b0, 1'b1, 1'b1);
+        checkoutputsignals(1'b1, 1'b1, 1'b0, 1'b1, 1'b1);
+        //check state and transitions
+        if (~err) begin
+            $display("TEST 1 PASSED");
+            s = s + 3'd1;
+            t = t + 3'd1;
+        end else begin
+            $display("TEST 1 FAILED");
+            err = 1'b0;
+            totalerr = 1'b1;
+        end
+
+        rst_n = 1'b1; // active-low
+
+    end
+
+
+
+endmodule: tb_rtl_prga
