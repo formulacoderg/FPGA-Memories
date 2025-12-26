@@ -205,9 +205,9 @@ Both decrypt to English sentences when the correct key is used.
 
 ## Performance
 
-- **Single-core cracking**: ~16.7M key attempts for full key space
-- **Dual-core cracking**: ~8.35M key attempts per core (2x speedup)
-- Clock frequency: Depends on FPGA timing constraints and optimization
+- **Single-core cracking**: ~1.67M key attempts in 2 mins
+- **Dual-core cracking**: ~1.67M key attempts/ min
+- Clock frequency: Depends on FPGA timing constraints and optimization utilized PLL clock and more cracking cores(8 cores) to increase speed to 1.67M key attempts in 9 seconds 
 - Memory access: Single-cycle read/write to embedded RAM
 
 ## Applications
@@ -228,9 +228,6 @@ This project demonstrates concepts applicable to:
 - Parallel processing and resource sharing
 - FSM design for complex control flows
 
-## Notes
-
-ARC4 is a legacy cipher that has been broken and should not be used for actual security applications. This implementation is purely educational, demonstrating hardware design principles through a well-understood cryptographic algorithm.
 
 ## License
 
